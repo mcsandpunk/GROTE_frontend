@@ -4,6 +4,7 @@ import ProductItem from "../components/ProductItem";
 import { Divider, List, Paper } from "@mui/material";
 import axios from "axios";
 import BASE_URL from "../constants/url-base";
+import moment from "moment/moment";
 
 const TodoContainer = () => {
   const [products, setProducts] = React.useState([]);
@@ -95,7 +96,7 @@ const TodoContainer = () => {
           note: product.note,
           department: product.department,
           complete: product.solved,
-          admissionDate: new Date(product.admissionDate)
+          admissionDate: moment(product.admissionDate).format('MMMM Do YYYY, h:mm:ss a'),
         };
       });
 
