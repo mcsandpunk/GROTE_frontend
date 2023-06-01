@@ -30,7 +30,7 @@ const TodoContainer = () => {
 
   const handleOnDelete = async (product, index) => {
     try {
-      const response = await axios.delete(`${BASE_URL}/${product.id}`);
+      await axios.delete(`${BASE_URL}/${product.id}`);
       const newTodoItems = [...products];
       newTodoItems.splice(index, 1);
       setProducts(newTodoItems);
@@ -50,7 +50,7 @@ const TodoContainer = () => {
       newProducts[index].complete = !product.complete;
       setProducts(newProducts);
 
-      const response = await axios.put(`${BASE_URL}/${product.id}?note=${product.note}&solved=${product.complete}`, product);
+      await axios.put(`${BASE_URL}/${product.id}?note=${product.note}&solved=${product.complete}`, product);
     } catch (error) {
       console.error("There was an error!", error);
     }
