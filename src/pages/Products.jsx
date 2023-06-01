@@ -1,23 +1,24 @@
 import React from "react";
-import TodoInput from "../components/TodoInput";
-import TodoItem from "../components/TodoItem";
-import { List, Paper } from "@mui/material";
+import ProductInput from "../components/ProductInput";
+import ProductItem from "../components/ProductItem";
+import { Divider, List, Paper } from "@mui/material";
 
 const TodoContainer = () => {
   const [todoItems, setTodoItems] = React.useState([
-    { id: 0, todo: "Mow the lawn", complete: false },
-    { id: 1, todo: "Do Laundry", complete: false },
-    { id: 2, todo: "Make Dinner", complete: false },
+    { id: 0, product: "Product 1", department: "department 1", complete: false },
+    { id: 1, product: "Product 2", department: "department 2", complete: false },
+    { id: 2, product: "Product 3", department: "department 3", complete: false },
   ]);
 
   const [checked, setChecked] = React.useState([0]);
 
-  const handleOnCreate = (todo) => {
+  const handleOnCreate = (product) => {
     const newTodoItems = [
       ...todoItems,
       {
         id: todoItems.length,
-        todo,
+        product: product.product,
+        department: product.department,
         complete: false,
       },
     ];
@@ -41,19 +42,23 @@ const TodoContainer = () => {
 
   const TodoListItems = () =>
     todoItems.map((value, index) => (
-      <TodoItem
-        key={index}
-        todoId={value.id}
-        todoName={value.todo}
-        onDelete={() => handleOnDelete(index)}
-        onToggle={() => handleToggle(value)}
-        checked={checked.indexOf(value) !== -1}
-      />
+        <>
+            <ProductItem
+                key={index}
+                productId={value.id}
+                productName={value.product}
+                department={value.department}
+                onDelete={() => handleOnDelete(index)}
+                onToggle={() => handleToggle(value)}
+                checked={checked.indexOf(value) !== -1}
+            />
+            <Divider />
+        </>
     ));
 
   return (
     <Paper sx={{padding: '1rem', maxWidth: '25vw'}} elevation={1}>
-      <TodoInput createTodoItem={handleOnCreate} />
+      <ProductInput onCreate={handleOnCreate} />
       <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
         <TodoListItems />
       </List>
