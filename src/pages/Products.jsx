@@ -40,7 +40,7 @@ const TodoContainer = () => {
     setChecked(newChecked);
   };
 
-  const TodoListItems = () =>
+  const ProductListItems = () =>
     todoItems.map((value, index) => (
         <>
             <ProductItem
@@ -60,7 +60,7 @@ const TodoContainer = () => {
     <Paper sx={{padding: '1rem', maxWidth: '25vw'}} elevation={1}>
       <ProductInput onCreate={handleOnCreate} />
       <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
-        <TodoListItems />
+        <ProductListItems />
       </List>
     </Paper>
   );
