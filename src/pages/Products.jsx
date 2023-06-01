@@ -30,12 +30,10 @@ const TodoContainer = () => {
 
   const handleOnDelete = async (product, index) => {
     try {
-
       const response = await axios.delete(`${BASE_URL}/${product.id}`);
       const newTodoItems = [...products];
       newTodoItems.splice(index, 1);
       setProducts(newTodoItems);
-
     } catch (error) {
       console.error(error);
     }
@@ -96,16 +94,15 @@ const TodoContainer = () => {
           note: product.note,
           department: product.department,
           complete: product.solved,
-          admissionDate: moment(product.admissionDate).format('MMMM Do YYYY, h:mm:ss a'),
+          admissionDate: moment(product.admissionDate).format("MMMM Do YYYY, h:mm:ss a"),
         };
       });
 
       setProducts(newProducts);
-
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   // READ
   React.useEffect(() => {
