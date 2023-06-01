@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Container,
@@ -8,18 +9,15 @@ import {
 } from "@mui/material";
 
 const SignIn = () => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const navigate = useNavigate();
+
+  function handleClick() {
+    navigate("/");
+  }
 
   return (
     <Container component="main" maxWidth="md">
-      <Paper sx={{padding: '1rem 2rem',}}>
+      <Paper sx={{ padding: "1rem 2rem" }}>
         <Box
           sx={{
             marginTop: 8,
@@ -32,30 +30,12 @@ const SignIn = () => {
             Iniciar Sesión
           </Typography>
 
-          <Box component="form" onSubmit={handleSubmit} noValidate>
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-            />
+          <Box component="form" onSubmit={handleClick}>
+            <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
 
-           <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-            />
+            <TextField margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
 
-           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Iniciar Sesión
             </Button>
           </Box>
@@ -63,6 +43,6 @@ const SignIn = () => {
       </Paper>
     </Container>
   );
-}
+};
 
-export default SignIn
+export default SignIn;

@@ -1,11 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
-import TodoContainer from './components/TodoContainer';
+import { Route, Routes } from "react-router-dom";
+import React from "react";
+import "./App.css";
+import TodoContainer from "./pages/TodoContainer";
+import Login from "./pages/login";
 
-function App() {
+const App = () => {
   return (
-    <TodoContainer />
+    <Routes>
+      <Route exact path="/" element={<TodoContainer />} />
+      <Route exact path="/login" element={<Login />} />
+    </Routes>
   );
-}
+};
 
 export default App;
