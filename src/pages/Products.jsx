@@ -2,62 +2,117 @@ import React from "react";
 import ProductInput from "../components/ProductInput";
 import ProductItem from "../components/ProductItem";
 import { Divider, List, Paper } from "@mui/material";
+import axios from "axios";
+import BASE_URL from "../constants/url-base";
 
 const TodoContainer = () => {
-  const [todoItems, setTodoItems] = React.useState([
-    { id: 0, product: "Product 1", department: "department 1", complete: false },
-    { id: 1, product: "Product 2", department: "department 2", complete: false },
-    { id: 2, product: "Product 3", department: "department 3", complete: false },
-  ]);
+  const [products, setProducts] = React.useState([]);
 
-  const [checked, setChecked] = React.useState([0]);
+  const handleOnCreate = async (product) => {
+    const response = await axios.post(`${BASE_URL}/`, {
+      name: product.product,
+      department: product.department,
+    });
 
-  const handleOnCreate = (product) => {
-    const newTodoItems = [
-      ...todoItems,
-      {
-        id: todoItems.length,
-        product: product.product,
-        department: product.department,
-        complete: false,
-      },
-    ];
-    setTodoItems(newTodoItems);
+    const newProduct = {
+      department: response.data.department,
+      id: response.data.id,
+      product: response.data.name,
+      note: "",
+      solved: false,
+    };
+    const productsTemp = [...products];
+    productsTemp.push(newProduct);
+
+    setProducts(productsTemp);
   };
 
-  const handleOnDelete = (index) => {
-    const newTodoItems = [...todoItems];
-    newTodoItems.splice(index, 1);
-    setTodoItems(newTodoItems);
+  const handleOnDelete = async (product, index) => {
+    try {
+
+      const response = await axios.delete(`${BASE_URL}/${product.id}`);
+      const newTodoItems = [...products];
+      newTodoItems.splice(index, 1);
+      setProducts(newTodoItems);
+
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleToggle = (value) => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  const handleToggle = async (product, index) => {
+    try {
+      if (!product.note) {
+        alert("Agrega un comentario");
+        return;
+      }
 
-    currentIndex === -1 ? newChecked.push(value) : newChecked.splice(currentIndex, 1);
+      const newProducts = [...products];
+      newProducts[index].complete = !product.complete;
+      setProducts(newProducts);
 
-    setChecked(newChecked);
+      const response = await axios.put(`${BASE_URL}/${product.id}?note=${product.note}&solved=${product.complete}`, product);
+    } catch (error) {
+      console.error("There was an error!", error);
+    }
+  };
+
+  const handleOnNoteChange = (e, index) => {
+    const newProducts = [...products];
+    newProducts[index].note = e;
+    setProducts(newProducts);
   };
 
   const ProductListItems = () =>
-    todoItems.map((value, index) => (
+    products.length > 0 &&
+    products.map((product, index) => {
+      return (
         <>
-            <ProductItem
-                key={index}
-                productId={value.id}
-                productName={value.product}
-                department={value.department}
-                onDelete={() => handleOnDelete(index)}
-                onToggle={() => handleToggle(value)}
-                checked={checked.indexOf(value) !== -1}
-            />
-            <Divider />
+          <ProductItem
+            key={product.id}
+            productId={product.id}
+            productName={product.product}
+            checked={product.complete}
+            productNote={product.note}
+            noteCreateDate={product.admissionDate}
+            department={product.department}
+            onDelete={() => handleOnDelete(product, index)}
+            onToggle={() => handleToggle(product, index)}
+            onNoteChange={(e) => handleOnNoteChange(e, index)}
+          />
+          <Divider />
         </>
-    ));
+      );
+    });
+
+  const getProducts = async () => {
+    try {
+      const resultProducts = await axios.get(`${BASE_URL}`);
+      const newProducts = resultProducts.data.map((product) => {
+        return {
+          id: product.id,
+          product: product.name,
+          note: product.note,
+          department: product.department,
+          complete: product.solved,
+          admissionDate: new Date(product.admissionDate)
+        };
+      });
+
+      setProducts(newProducts);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // READ
+  React.useEffect(() => {
+    getProducts();
+  }, []);
 
   return (
-    <Paper sx={{padding: '1rem', maxWidth: '25vw'}} elevation={1}>
+    <Paper sx={{ padding: "1rem", maxWidth: "25vw" }} elevation={1}>
       <ProductInput onCreate={handleOnCreate} />
       <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
         <ProductListItems />
