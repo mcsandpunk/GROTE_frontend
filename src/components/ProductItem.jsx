@@ -1,5 +1,5 @@
 import { Delete } from "@mui/icons-material";
-import { Box, Button, Checkbox, IconButton, ListItem, ListItemButton, ListItemText, TextField, Typography } from "@mui/material";
+import { Box, Checkbox, IconButton, ListItem, ListItemButton, ListItemText, TextField, Typography } from "@mui/material";
 import React from "react";
 
 const ProductItem = (props) => {
@@ -51,19 +51,17 @@ const ProductItem = (props) => {
             </ListItemButton>
           </Box>
         </ListItem>
-        <Button onClick={onDelete}>
-          <IconButton>
+          <IconButton onClick={onDelete}>
             <Delete />
           </IconButton>
-        </Button>
       </Box>
       <TextField
+        label="Comments"
         placeholder="Comments"
         fullWidth
         multiline
         rows={1}
-        defaultValue=""
-        value={productNote}
+        value={productNote || ""}
         onChange={(e) => onNoteChange(e.target.value)}
       />
     </Box>

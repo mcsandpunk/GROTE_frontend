@@ -1,7 +1,7 @@
 import React from "react";
 import ProductInput from "../components/ProductInput";
 import ProductItem from "../components/ProductItem";
-import { Divider, List, Paper } from "@mui/material";
+import { Box, Divider, List, Paper } from "@mui/material";
 import axios from "axios";
 import BASE_URL from "../constants/url-base";
 import moment from "moment/moment";
@@ -62,27 +62,52 @@ const TodoContainer = () => {
     setProducts(newProducts);
   };
 
-  const ProductListItems = () =>
-    products.length > 0 &&
-    products.map((product, index) => {
-      return (
-        <>
-          <ProductItem
-            key={product.id}
-            productId={product.id}
-            productName={product.product}
-            checked={product.complete}
-            productNote={product.note}
-            noteCreateDate={product.admissionDate}
-            department={product.department}
-            onDelete={() => handleOnDelete(product, index)}
-            onToggle={() => handleToggle(product, index)}
-            onNoteChange={(e) => handleOnNoteChange(e, index)}
-          />
-          <Divider />
-        </>
-      );
-    });
+  const ProductListItems = () => {
+    const productsTemp = [...products];
+    const indexMapped = products.map((el) => el.id);
+    console.log(indexMapped);
+
+    return (
+      indexMapped.length > 0 &&
+      indexMapped.map((productId, index) => {
+        const product = productsTemp.find(product => product.id === productId)
+        return (
+          <Box key={product.id}>
+            <ProductItem
+              productId={product.id}
+              productName={product.product}
+              checked={product.complete}
+              productNote={product.note}
+              noteCreateDate={product.admissionDate}
+              department={product.department}
+              onDelete={() => handleOnDelete(product, index)}
+              onToggle={() => handleToggle(product, index)}
+              onNoteChange={(e) => handleOnNoteChange(e, index)}
+            />
+            <Divider />
+          </Box>
+        );
+      })
+    );
+  };
+  // const ProductListItems = () =>
+  //   products.length > 0 &&
+  //   products.map((product, index) => (
+  //     <Box key={product.id}>
+  //       <ProductItem
+  //         productId={product.id}
+  //         productName={product.product}
+  //         checked={product.complete}
+  //         productNote={product.note}
+  //         noteCreateDate={product.admissionDate}
+  //         department={product.department}
+  //         onDelete={() => handleOnDelete(product, index)}
+  //         onToggle={() => handleToggle(product, index)}
+  //         onNoteChange={handleOnNoteChange}
+  //       />
+  //       <Divider />
+  //     </Box>
+  //   ));
 
   const getProducts = async () => {
     try {
