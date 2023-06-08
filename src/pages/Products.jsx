@@ -21,6 +21,7 @@ const TodoContainer = () => {
       product: response.data.name,
       note: "",
       solved: false,
+      admissionDate: moment().format()
     };
     const productsTemp = [...products];
     productsTemp.push(newProduct);
@@ -62,52 +63,24 @@ const TodoContainer = () => {
     setProducts(newProducts);
   };
 
-  const ProductListItems = () => {
-    const productsTemp = [...products];
-    const indexMapped = products.map((el) => el.id);
-    console.log(indexMapped);
-
-    return (
-      indexMapped.length > 0 &&
-      indexMapped.map((productId, index) => {
-        const product = productsTemp.find(product => product.id === productId)
-        return (
-          <Box key={product.id}>
-            <ProductItem
-              productId={product.id}
-              productName={product.product}
-              checked={product.complete}
-              productNote={product.note}
-              noteCreateDate={product.admissionDate}
-              department={product.department}
-              onDelete={() => handleOnDelete(product, index)}
-              onToggle={() => handleToggle(product, index)}
-              onNoteChange={(e) => handleOnNoteChange(e, index)}
-            />
-            <Divider />
-          </Box>
-        );
-      })
-    );
-  };
-  // const ProductListItems = () =>
-  //   products.length > 0 &&
-  //   products.map((product, index) => (
-  //     <Box key={product.id}>
-  //       <ProductItem
-  //         productId={product.id}
-  //         productName={product.product}
-  //         checked={product.complete}
-  //         productNote={product.note}
-  //         noteCreateDate={product.admissionDate}
-  //         department={product.department}
-  //         onDelete={() => handleOnDelete(product, index)}
-  //         onToggle={() => handleToggle(product, index)}
-  //         onNoteChange={handleOnNoteChange}
-  //       />
-  //       <Divider />
-  //     </Box>
-  //   ));
+  const ProductListItems = () =>
+    products.length > 0 &&
+    products.map((product, index) => (
+      <Box key={index}>
+        <ProductItem
+          productId={product.id}
+          productName={product.product}
+          checked={product.complete}
+          productNote={product.note}
+          noteCreateDate={product.admissionDate}
+          department={product.department}
+          onDelete={() => handleOnDelete(product, index)}
+          onToggle={() => handleToggle(product, index)}
+          onNoteChange={(e) => handleOnNoteChange(e, index)}
+        />
+        <Divider />
+      </Box>
+    ));
 
   const getProducts = async () => {
     try {

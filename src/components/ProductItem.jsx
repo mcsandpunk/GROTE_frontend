@@ -15,6 +15,8 @@ const ProductItem = (props) => {
     onNoteChange,
   } = props;
 
+  const [value, setValue] = React.useState(productNote || "");
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", paddingY: "1.5rem" }}>
       <Box sx={{ display: "flex" }}>
@@ -51,9 +53,9 @@ const ProductItem = (props) => {
             </ListItemButton>
           </Box>
         </ListItem>
-          <IconButton onClick={onDelete}>
-            <Delete />
-          </IconButton>
+        <IconButton onClick={onDelete}>
+          <Delete />
+        </IconButton>
       </Box>
       <TextField
         label="Comments"
@@ -61,10 +63,12 @@ const ProductItem = (props) => {
         fullWidth
         multiline
         rows={1}
-        value={productNote || ""}
-        onChange={(e) => onNoteChange(e.target.value)}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={e => onNoteChange(e.target.value)}
       />
     </Box>
   );
 };
+
 export default ProductItem;
